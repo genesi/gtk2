@@ -65,6 +65,8 @@
 #include <gtk/gtkcellview.h>
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkcheckmenuitem.h>
+#include <gtk/ubuntumenuproxy.h>
+#include <gtk/ubuntumenuproxymodule.h>
 #include <gtk/gtkclipboard.h>
 #include <gtk/gtkcolorbutton.h>
 #include <gtk/gtkcolorsel.h>

@@ -1395,7 +1395,17 @@ gtk_menu_item_mnemonic_activate (GtkWidget *widget,
 				  widget);
     }
   else
-    g_signal_emit (widget, menu_item_signals[ACTIVATE_ITEM], 0);
+    {
+      if (GTK_IS_MENU_BAR (widget->parent) &&
+          ubuntu_gtk_menu_shell_activate_mnemonic (GTK_MENU_SHELL (widget->parent), widget))
+        {
+          //g_print ("send activate to remote!\n");
+        }
+      else
+        {
+          g_signal_emit (widget, menu_item_signals[ACTIVATE_ITEM], 0);
+        }
+    }
   
   return TRUE;
 }

@@ -107,7 +107,7 @@ gtk_menu_bar_class_init (GtkMenuBarClass *class)
   widget_class->size_allocate = gtk_menu_bar_size_allocate;
   widget_class->expose_event = gtk_menu_bar_expose;
   widget_class->hierarchy_changed = gtk_menu_bar_hierarchy_changed;
-  
+
   menu_shell_class->submenu_placement = GTK_TOP_BOTTOM;
   menu_shell_class->get_popup_delay = gtk_menu_bar_get_popup_delay;
   menu_shell_class->move_current = gtk_menu_bar_move_current;
@@ -218,8 +218,37 @@ gtk_menu_bar_class_init (GtkMenuBarClass *class)
 }
 
 static void
+local_notify (GtkWidget  *widget,
+              GParamSpec *pspec,
+              gpointer    user_data)
+{
+  gboolean local;
+
+  g_object_get (widget,
+                "ubuntu-local", &local,
+                NULL);
+
+  gtk_widget_queue_resize (widget);
+
+  /*
+  if (local)
+    {
+      gtk_widget_show (widget);
+    }
+  else
+    {
+      gtk_widget_hide (widget);
+    }
+  */
+}
+
+static void
 gtk_menu_bar_init (GtkMenuBar *object)
 {
+  g_signal_connect (object,
+                    "notify::ubuntu-local",
+                    G_CALLBACK (local_notify),
+                    NULL);
 }
 
 GtkWidget*
@@ -284,13 +313,27 @@ gtk_menu_bar_size_request (GtkWidget      *widget,
   gint nchildren;
   GtkRequisition child_requisition;
   gint ipadding;
+  gboolean local = FALSE;
 
   g_return_if_fail (GTK_IS_MENU_BAR (widget));
   g_return_if_fail (requisition != NULL);
 
   requisition->width = 0;
   requisition->height = 0;
-  
+
+  g_object_get (widget,
+                "ubuntu-local",
+                &local,
+                NULL);
+
+  if (!local)
+    {
+      requisition->width = 0;
+      requisition->height = 0;
+
+      return;
+    }
+
   if (gtk_widget_get_visible (widget))
     {
       menu_bar = GTK_MENU_BAR (widget);

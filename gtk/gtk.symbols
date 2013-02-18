@@ -2580,6 +2580,21 @@ gtk_menu_item_remove_submenu
 #endif
 #endif
 
+#if IN_HEADER(__UBUNTU_MENU_PROXY_H__)
+#if IN_FILE(__UBUNTU_MENU_PROXY_C__)
+ubuntu_menu_proxy_get_type G_GNUC_CONST
+ubuntu_menu_proxy_get
+ubuntu_menu_proxy_insert
+#endif
+#endif
+
+#if IN_HEADER(__UBUNTU_MENU_PROXY_MODULE_H__)
+#if IN_FILE(__UBUNTU_MENU_PROXY_MODULE_C__)
+ubuntu_menu_proxy_module_get_type
+ubuntu_menu_proxy_module_get
+#endif
+#endif
+
 #if IN_HEADER(__GTK_MENU_SHELL_H__)
 #if IN_FILE(__GTK_MENU_SHELL_C__)
 gtk_menu_shell_activate_item
@@ -2594,6 +2609,7 @@ gtk_menu_shell_select_first
 gtk_menu_shell_select_item
 gtk_menu_shell_set_take_focus
 gtk_menu_shell_get_take_focus
+ubuntu_gtk_menu_shell_activate_mnemonic
 #endif
 #endif
 

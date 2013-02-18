@@ -249,6 +249,8 @@ gtk_public_h_sources =          \
 	gtkmenu.h		\
 	gtkmenubar.h		\
 	gtkmenuitem.h		\
+	ubuntumenuproxy.h	\
+	ubuntumenuproxymodule.h	\
 	gtkmenushell.h		\
 	gtkmenutoolbutton.h	\
 	gtkmessagedialog.h	\
@@ -517,6 +519,8 @@ gtk_base_c_sources =            \
 	gtkmenu.c		\
 	gtkmenubar.c		\
 	gtkmenuitem.c		\
+	ubuntumenuproxy.c	\
+	ubuntumenuproxymodule.c	\
 	gtkmenushell.c		\
 	gtkmenutoolbutton.c	\
 	gtkmessagedialog.c	\
