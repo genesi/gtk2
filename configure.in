@@ -1310,23 +1310,27 @@ LDFLAGS="$saved_ldflags"
 
 # Pull in gio-unix for GDesktopAppInfo usage, see at least gdkapplaunchcontext-x11.c
 if test "x$gdktarget" = "xx11"; then
-  GDK_PACKAGES="$PANGO_PACKAGES gio-unix-2.0 $X_PACKAGES gdk-pixbuf-2.0 cairo-$cairo_backend"
+  GDK_PACKAGES="$PANGO_PACKAGES gdk-pixbuf-2.0"
+  GDK_PRIVATE_PACKAGES="gio-unix-2.0 $X_PACKAGES cairo-$cairo_backend"
 else
-  GDK_PACKAGES="$PANGO_PACKAGES gio-2.0 gdk-pixbuf-2.0 cairo-$cairo_backend"
+  GDK_PACKAGES="$PANGO_PACKAGES gdk-pixbuf-2.0"
+  GDK_PRIVATE_PACKAGES="gio-2.0 cairo-$cairo_backend"
 fi
 
-GDK_DEP_LIBS="$GDK_EXTRA_LIBS `$PKG_CONFIG --libs $GDK_PACKAGES`"
-GDK_DEP_CFLAGS="`$PKG_CONFIG --cflags  gthread-2.0 $GDK_PACKAGES` $GDK_EXTRA_CFLAGS"
+GDK_DEP_LIBS="$GDK_EXTRA_LIBS `$PKG_CONFIG --libs $GDK_PACKAGES $GDK_PRIVATE_PACKAGES`"
+GDK_DEP_CFLAGS="`$PKG_CONFIG --cflags  gthread-2.0 $GDK_PACKAGES $GDK_PRIVATE_PACKAGES` $GDK_EXTRA_CFLAGS"
 #
 # If we aren't writing explicit dependencies, then don't put the extra libraries we need
 # into the pkg-config files
 #
 if test $enable_explicit_deps != yes ; then
-  GDK_PACKAGES="$PANGO_PACKAGES gdk-pixbuf-2.0"
   GDK_EXTRA_LIBS=
+else
+  GDK_PACKAGES="$GDK_PACKAGES $GDK_PRIVATE_PACKAGES"
 fi
 
 AC_SUBST(GDK_PACKAGES)
+AC_SUBST(GDK_PRIVATE_PACKAGES)
 AC_SUBST(GDK_EXTRA_LIBS)
 AC_SUBST(GDK_EXTRA_CFLAGS)
 AC_SUBST(GDK_DEP_LIBS)
