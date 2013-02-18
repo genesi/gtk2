@@ -265,6 +265,7 @@ struct _GtkTreeViewPrivate
 
   guint fixed_height_mode : 1;
   guint fixed_height_check : 1;
+  guint ubuntu_almost_fixed_height_mode : 1;
 
   guint reorderable : 1;
   guint header_has_focus : 1;
