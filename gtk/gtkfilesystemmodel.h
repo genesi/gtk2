@@ -21,6 +21,10 @@
 #ifndef __GTK_FILE_SYSTEM_MODEL_H__
 #define __GTK_FILE_SYSTEM_MODEL_H__
 
+#ifndef GTK_FILE_SYSTEM_ENABLE_UNSUPPORTED
+#error "GtkFileSystemModel is not supported API for general use"
+#endif
+
 #include <gio/gio.h>
 #include <gtk/gtkfilefilter.h>
 #include <gtk/gtktreemodel.h>

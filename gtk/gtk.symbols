@@ -1645,6 +1645,12 @@ gtk_file_chooser_dialog_new_with_backend
 #endif
 #endif
 
+#if IN_HEADER(__GTK_FILE_CHOOSER_UTILS_H__)
+#if IN_FILE(__GTK_FILE_CHOOSER_UTILS_C__)
+hildon_gtk_file_chooser_install_properties
+#endif
+#endif
+
 #if IN_HEADER(__GTK_FILE_CHOOSER_WIDGET_H__)
 #if IN_FILE(__GTK_FILE_CHOOSER_WIDGET_C__)
 gtk_file_chooser_widget_get_type G_GNUC_CONST

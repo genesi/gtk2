@@ -122,6 +122,22 @@ _gtk_file_chooser_install_properties (GObjectClass *klass)
 				    "create-folders");
 }
 
+#ifdef MAEMO_CHANGES
+/**
+ * hildon_gtk_file_chooser_install_properties:
+ *
+ * Exactly the same as the private _gtk_file_chooser_install_properties()
+ * but exported for hildon-fm.
+ *
+ * Since: maemo 2.0
+ */
+void
+hildon_gtk_file_chooser_install_properties (GObjectClass *klass)
+{
+  _gtk_file_chooser_install_properties (klass);
+}
+#endif /* MAEMO_CHANGES */
+
 /**
  * _gtk_file_chooser_delegate_iface_init:
  * @iface: a #GtkFileChoserIface structure
@@ -363,3 +379,6 @@ delegate_confirm_overwrite (GtkFileChooser    *chooser,
   g_signal_emit_by_name (data, "confirm-overwrite", &conf);
   return conf;
 }
+
+#define __GTK_FILE_CHOOSER_UTILS_C__
+#include "gtkaliasdef.c"
