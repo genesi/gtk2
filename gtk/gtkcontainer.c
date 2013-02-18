@@ -48,6 +48,8 @@ enum {
   REMOVE,
   CHECK_RESIZE,
   SET_FOCUS_CHILD,
+  CHILD_ADDED,
+  CHILD_REMOVED,
   LAST_SIGNAL
 };
 
@@ -291,6 +293,24 @@ gtk_container_class_init (GtkContainerClass *class)
 		  _gtk_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
 		  GTK_TYPE_WIDGET);
+  container_signals[CHILD_ADDED] =
+    g_signal_new (I_("child-added"),
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  _gtk_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1,
+                  GTK_TYPE_WIDGET);
+  container_signals[CHILD_REMOVED] =
+    g_signal_new (I_("child-removed"),
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  _gtk_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1,
+                  GTK_TYPE_WIDGET);
 }
 
 static void

@@ -567,6 +567,8 @@ gtk_menu_shell_insert (GtkMenuShell *menu_shell,
                               GTK_WIDGET (menu_shell),
                               child,
                               position);
+
+  g_signal_emit_by_name (menu_shell, "child-added", child);
 }
 
 static void

@@ -52,6 +52,8 @@ enum {
   ACTIVATE_ITEM,
   TOGGLE_SIZE_REQUEST,
   TOGGLE_SIZE_ALLOCATE,
+  SUBMENU_ADDED,
+  SUBMENU_REMOVED,
   LAST_SIGNAL
 };
 
@@ -243,6 +245,25 @@ gtk_menu_item_class_init (GtkMenuItemClass *klass)
 		  _gtk_marshal_VOID__INT,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_INT);
+
+  menu_item_signals[SUBMENU_ADDED] =
+    g_signal_new (I_("submenu-added"),
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_FIRST,
+ 		  0,
+		  NULL, NULL,
+		  _gtk_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1,
+		  GTK_TYPE_WIDGET);
+ 
+ menu_item_signals[SUBMENU_REMOVED] =
+    g_signal_new (I_("submenu-removed"),
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_FIRST,
+ 		  0,
+		  NULL, NULL,
+		  _gtk_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 
   /**
    * GtkMenuItem:right-justified:
@@ -791,6 +812,14 @@ gtk_menu_item_set_submenu (GtkMenuItem *menu_item,
       if (GTK_WIDGET (menu_item)->parent)
 	gtk_widget_queue_resize (GTK_WIDGET (menu_item));
 
+        if(submenu == NULL)
+      {
+        g_signal_emit_by_name (menu_item, "submenu-removed");
+      }
+        else
+      {
+        g_signal_emit_by_name (menu_item, "submenu-added", GTK_WIDGET(submenu));
+      }
       g_object_notify (G_OBJECT (menu_item), "submenu");
     }
 }
