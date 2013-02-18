@@ -9622,7 +9622,8 @@ gtk_tree_view_focus_to_cursor (GtkTreeView *tree_view)
 
       if (cursor_path)
 	{
-	  if (tree_view->priv->selection->type == GTK_SELECTION_MULTIPLE)
+	  if (tree_view->priv->selection->type == GTK_SELECTION_MULTIPLE ||
+	      tree_view->priv->selection->type == GTK_SELECTION_SINGLE)
 	    gtk_tree_view_real_set_cursor (tree_view, cursor_path, FALSE, FALSE);
 	  else
 	    gtk_tree_view_real_set_cursor (tree_view, cursor_path, TRUE, FALSE);
