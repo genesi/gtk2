@@ -198,7 +198,7 @@ introspection_files = 		\
         gdkenumtypes.h
 
 Gdk-2.0.gir: $(gdktargetlib) Makefile
-Gdk_2_0_gir_SCANNERFLAGS = --warn-all
+Gdk_2_0_gir_SCANNERFLAGS = --warn-all --strip-prefix=Gdk
 Gdk_2_0_gir_INCLUDES = Gio-2.0 GdkPixbuf-2.0 Pango-1.0 cairo-1.0
 Gdk_2_0_gir_LIBS = $(gdktargetlib)
 Gdk_2_0_gir_FILES = $(introspection_files)
@@ -243,10 +243,8 @@ GdkX11_2_0_gir_SCANNERFLAGS = --warn-all --strip-prefix=Gdk
 GdkX11_2_0_gir_INCLUDES = Gio-2.0 Gdk-2.0 GdkPixbuf-2.0 Pango-1.0 xlib-2.0
 GdkX11_2_0_gir_LIBS = $(gdktargetlib)
 GdkX11_2_0_gir_FILES = $(x11_introspection_files)
-GdkX11_2_0_gir_CFLAGS = $(INCLUDES) -I$(top_srcdir)/gdk -L$(top_builddir)/gdk
+GdkX11_2_0_gir_CFLAGS = $(INCLUDES) -I$(top_srcdir)/gdk -L$(top_builddir)/gdk -I.. -I$(srcdir)
 INTROSPECTION_GIRS += GdkX11-2.0.gir
-
-introspection_files += $(filter-out x11/gdkx.h, $(x11_introspection_files))
 
 endif # USE_X11
 
