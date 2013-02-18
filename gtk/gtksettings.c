@@ -310,7 +310,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
                                              g_param_spec_string ("gtk-fallback-icon-theme",
 								  P_("Fallback Icon Theme Name"),
 								  P_("Name of a icon theme to fall back to"),
-								  NULL,
+								  "gnome",
 								  GTK_PARAM_READWRITE),
                                              NULL);
   g_assert (result == PROP_FALLBACK_ICON_THEME);
