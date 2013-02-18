@@ -344,8 +344,9 @@ cups_printer_create_cairo_surface (GtkPrinter       *printer,
  
   /* TODO: check if it is a ps or pdf printer */
   
-  surface = cairo_ps_surface_create_for_stream  (_cairo_write_to_cups, cache_io, width, height);
+  surface = cairo_pdf_surface_create_for_stream  (_cairo_write_to_cups, cache_io, width, height);
 
+  /*
   ppd_file = gtk_printer_cups_get_ppd (GTK_PRINTER_CUPS (printer));
 
   if (ppd_file != NULL)
@@ -403,6 +404,7 @@ cups_printer_create_cairo_surface (GtkPrinter       *printer,
 
   if (level == 3)
     cairo_ps_surface_restrict_to_level (surface, CAIRO_PS_LEVEL_3);
+  */
 
   cairo_surface_set_fallback_resolution (surface,
                                          2.0 * gtk_print_settings_get_printer_lpi (settings),
