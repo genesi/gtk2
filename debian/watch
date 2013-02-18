@@ -1,0 +1,3 @@
+version=2
+http://download.gnome.org/sources/gtk+/([\d\.]+)\d/ \
+	gtk\+-(.*)\.tar\.gz

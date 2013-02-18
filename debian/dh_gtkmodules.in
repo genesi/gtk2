@@ -1,0 +1,61 @@
+#!/usr/bin/perl -w
+
+=head1 NAME
+
+dh_gtkmodules - create Gtk module files for Gtk modules
+
+=cut
+
+use strict;
+use Debian::Debhelper::Dh_Lib;
+use Cwd;
+
+=head1 SYNOPSIS
+
+B<dh_gtkmodules> [S<I<debhelper options>>]
+
+=head1 DESCRIPTION
+
+B<dh_gtkmodules> is a debhelper program that handles correctly
+generating a dependency on the versionned Gtk+ module ABI and
+indexes for GdkPixbuf loaders and IM modules that it finds in the
+Gtk+ module directories.
+
+This command automatically adds a "<package>.loaders" file to the
+current package with the package name or "<package>.immodules" if it
+finds any GdkPixbuf loaders or IM modules.
+
+If this command finds the versionned standard module directory in the
+current package, it will generate a dependency on the earliest Gtk
+version that Gtk currently has compatibility for in ${misc:Depends}
+("binary version").
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-k>
+
+Do not generate any dependencies in ${misc:Depends}.
+
+=cut
+
+init();
+
+warning("This program is deprecated, everything is handled by triggers now.");
+exit 0;
+
+=back
+
+=head1 SEE ALSO
+
+L<debhelper>
+
+This program relies on Debhelper, but is shipped with the Gtk
+development files.
+
+=head1 AUTHOR
+
+Loic Minier <lool@dooz.org>
+
+=cut

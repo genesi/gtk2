@@ -1,0 +1,26 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = triggered ]; then
+    for trigger in $2; do
+        if ! [ -d $trigger ]; then
+            continue
+        fi
+        case $trigger in
+          /@MODULES_BASE_PATH@/immodules)
+            # This is triggered everytime an application installs a
+            # GTK immodule loader
+            /@LIBDIR@/@SHARED_PKG@/gtk-query-immodules-2.0 /@MODULES_BASE_PATH@/immodules/*.so > /@MODULES_BASE_PATH@/gtk.immodules || true
+            ;;
+        esac
+    done
+    exit 0
+fi
+
+#DEBHELPER#
+
+# Also handle the initial installation
+if [ -d /@MODULES_BASE_PATH@/immodules ]; then
+     /@LIBDIR@/@SHARED_PKG@/gtk-query-immodules-2.0 /@MODULES_BASE_PATH@/immodules/*.so > /@MODULES_BASE_PATH@/gtk.immodules || true
+fi
+
