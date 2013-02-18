@@ -80,8 +80,12 @@
 #include "gtkeventbox.h"
 #include "gtkoptionmenu.h"
 
+#include "gtkimage.h"
+
 #define WANT_HPANED 1
 #include "gtkhpaned.h"
+
+#include "stock-icons/ximian-icons.h"
 
 #include "gtkalias.h"
 
@@ -318,6 +322,9 @@ static gint                cmpl_last_valid_char    (CompletionState* cmpl_state)
  */
 static gchar*              cmpl_completion_fullname (const gchar*, CompletionState* cmpl_state);
 
+static void home_clicked (GtkWidget *widget, gpointer data);
+static void desktop_clicked (GtkWidget *widget, gpointer data);
+static void documents_clicked (GtkWidget *widget, gpointer data);
 
 /* Directory operations. */
 static CompletionDir* open_ref_dir         (gchar* text_to_complete,
@@ -627,6 +634,10 @@ gtk_file_selection_init (GtkFileSelection *filesel)
   GtkWidget *spacer;
   GtkDialog *dialog;
 
+  GdkPixbuf *ipixbuf;
+  GtkWidget *bbox, *home_button, *desk_button, *docs_button, *xbox;
+  GtkWidget *lbox;
+
   GtkListStore *model;
   GtkTreeViewColumn *column;
   
@@ -640,18 +651,9 @@ gtk_file_selection_init (GtkFileSelection *filesel)
   filesel->main_vbox = dialog->vbox;
   gtk_container_set_border_width (GTK_CONTAINER (filesel), 10);
 
-  /* The horizontal box containing create, rename etc. buttons */
-  filesel->button_area = gtk_hbutton_box_new ();
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (filesel->button_area), GTK_BUTTONBOX_START);
-  gtk_box_set_spacing (GTK_BOX (filesel->button_area), 0);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), filesel->button_area, 
-		      FALSE, FALSE, 0);
-  gtk_widget_show (filesel->button_area);
-  
-  gtk_file_selection_show_fileop_buttons (filesel);
-
   /* hbox for pulldown menu */
   pulldown_hbox = gtk_hbox_new (TRUE, 5);
+  gtk_container_set_border_width (GTK_CONTAINER (pulldown_hbox), 4);
   gtk_box_pack_start (GTK_BOX (filesel->main_vbox), pulldown_hbox, FALSE, FALSE, 0);
   gtk_widget_show (pulldown_hbox);
   
@@ -663,14 +665,27 @@ gtk_file_selection_init (GtkFileSelection *filesel)
     
   /*  The horizontal box containing the directory and file listboxes  */
 
+  xbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), xbox, TRUE, TRUE, 0);
+  gtk_widget_show (xbox);
+
+  bbox = gtk_vbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (xbox), bbox, FALSE, FALSE, 5);
+  gtk_widget_show (bbox);
+
+  lbox = gtk_vbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (xbox), lbox, TRUE, TRUE, 5);
+  gtk_widget_show (lbox);
+
   spacer = gtk_hbox_new (FALSE, 0);
   gtk_widget_set_size_request (spacer, -1, 5);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), spacer, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (lbox), spacer, FALSE, FALSE, 0);
   gtk_widget_show (spacer);
   
   list_hbox = gtk_hbox_new (FALSE, 5);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), list_hbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (lbox), list_hbox, TRUE, TRUE, 0);
   gtk_widget_show (list_hbox);
+
   if (WANT_HPANED)
     list_container = g_object_new (GTK_TYPE_HPANED,
 				   "visible", TRUE,
@@ -682,9 +697,78 @@ gtk_file_selection_init (GtkFileSelection *filesel)
 
   spacer = gtk_hbox_new (FALSE, 0);
   gtk_widget_set_size_request (spacer, -1, 5);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), spacer, FALSE, FALSE, 0);  
+  gtk_box_pack_start (GTK_BOX (lbox), spacer, FALSE, FALSE, 0);  
   gtk_widget_show (spacer);
   
+
+  /* The Pretty Icons */
+  
+  home_button = gtk_button_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (home_button), 4);
+  gtk_box_pack_start (GTK_BOX (bbox), home_button, FALSE, FALSE, 0);
+  gtk_widget_show (home_button);
+
+  g_signal_connect (G_OBJECT (home_button), "clicked",
+		    G_CALLBACK (home_clicked), filesel);
+
+  xbox = gtk_vbox_new (FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (home_button), xbox);
+  gtk_widget_show (xbox);
+
+  ipixbuf = gdk_pixbuf_new_from_inline (-1, stock_home_48, FALSE, NULL);
+  label = gtk_image_new_from_pixbuf (ipixbuf);
+  gtk_box_pack_start (GTK_BOX (xbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  label = gtk_label_new_with_mnemonic ("_Home");
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), home_button);
+  gtk_box_pack_end (GTK_BOX (xbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  desk_button = gtk_button_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (desk_button), 4);
+  gtk_box_pack_start (GTK_BOX (bbox), desk_button, FALSE, FALSE, 0);
+  gtk_widget_show (desk_button);
+
+  g_signal_connect (G_OBJECT (desk_button), "clicked",
+		    G_CALLBACK (desktop_clicked), filesel);
+
+  xbox = gtk_vbox_new (FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (desk_button), xbox);
+  gtk_widget_show (xbox);
+
+  ipixbuf = gdk_pixbuf_new_from_inline (-1, stock_desktop_48, FALSE, NULL);
+  label = gtk_image_new_from_pixbuf (ipixbuf);
+  gtk_box_pack_start (GTK_BOX (xbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  label = gtk_label_new_with_mnemonic ("D_esktop");
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), desk_button);
+  gtk_box_pack_end (GTK_BOX (xbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  docs_button = gtk_button_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (docs_button), 4);
+  gtk_box_pack_start (GTK_BOX (bbox), docs_button, FALSE, FALSE, 0);
+  gtk_widget_show (docs_button);
+
+  g_signal_connect (G_OBJECT (docs_button), "clicked",
+		    G_CALLBACK (documents_clicked), filesel);
+
+  xbox = gtk_vbox_new (FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (docs_button), xbox);
+  gtk_widget_show (xbox);
+
+  ipixbuf = gdk_pixbuf_new_from_inline (-1, stock_documents_48, FALSE, NULL);
+  label = gtk_image_new_from_pixbuf (ipixbuf);
+  gtk_box_pack_start (GTK_BOX (xbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  label = gtk_label_new_with_mnemonic ("Docu_ments");
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), docs_button);
+  gtk_box_pack_end (GTK_BOX (xbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
   /* The directories list */
 
   model = gtk_list_store_new (1, G_TYPE_STRING);
@@ -756,6 +840,15 @@ gtk_file_selection_init (GtkFileSelection *filesel)
   gtk_container_add (GTK_CONTAINER (list_container), scrolled_win);
   gtk_widget_show (filesel->file_list);
   gtk_widget_show (scrolled_win);
+
+  /* The horizontal box containing create, rename etc. buttons */
+  filesel->button_area = gtk_hbox_new (FALSE, 0);
+  gtk_box_set_spacing (GTK_BOX (filesel->button_area), 0);
+  gtk_box_pack_start (GTK_BOX (lbox), filesel->button_area, 
+		      FALSE, FALSE, 0);
+  gtk_widget_show (filesel->button_area);
+  
+  gtk_file_selection_show_fileop_buttons (filesel);
 
   /* action area for packing buttons into. */
   filesel->action_area = gtk_hbox_new (TRUE, 0);
@@ -1012,39 +1105,94 @@ gtk_file_selection_new (const gchar *title)
 void
 gtk_file_selection_show_fileop_buttons (GtkFileSelection *filesel)
 {
+  GtkWidget *label;
+  GtkWidget *bbox;
+  
   g_return_if_fail (GTK_IS_FILE_SELECTION (filesel));
     
   /* delete, create directory, and rename */
   if (!filesel->fileop_c_dir) 
     {
-      filesel->fileop_c_dir = gtk_button_new_with_mnemonic (_("_New Folder"));
+      filesel->fileop_c_dir = gtk_button_new ();
+      gtk_container_set_border_width (GTK_CONTAINER (filesel->fileop_c_dir), 4);
+      
+      bbox = gtk_hbox_new (FALSE, 2);
+      gtk_container_add (GTK_CONTAINER (filesel->fileop_c_dir), bbox);
+      
+      label = gtk_image_new_from_stock (GTK_STOCK_OPEN, GTK_ICON_SIZE_BUTTON);
+      gtk_box_pack_start (GTK_BOX (bbox), label, FALSE, FALSE, 0);
+      gtk_widget_show (label);
+      
+      label = gtk_label_new_with_mnemonic (_("_New Folder"));
+      gtk_label_set_mnemonic_widget (GTK_LABEL (label), filesel->fileop_c_dir);
+      gtk_box_pack_start (GTK_BOX (bbox), label, FALSE, FALSE, 0);
+      gtk_widget_show (label);
+      
+      gtk_widget_show (bbox);
+      
       g_signal_connect (filesel->fileop_c_dir, "clicked",
-			G_CALLBACK (gtk_file_selection_create_dir),
-			filesel);
+			G_CALLBACK (gtk_file_selection_create_dir), 
+			(gpointer) filesel);
       gtk_box_pack_start (GTK_BOX (filesel->button_area), 
-			  filesel->fileop_c_dir, TRUE, TRUE, 0);
+			  filesel->fileop_c_dir, FALSE, FALSE, 0);
       gtk_widget_show (filesel->fileop_c_dir);
     }
-	
+  
   if (!filesel->fileop_del_file) 
     {
-      filesel->fileop_del_file = gtk_button_new_with_mnemonic (_("De_lete File"));
+      filesel->fileop_del_file = gtk_button_new ();
+      gtk_container_set_border_width (GTK_CONTAINER (filesel->fileop_del_file), 4);
+      
+      bbox = gtk_hbox_new (FALSE, 2);
+      gtk_container_add (GTK_CONTAINER (filesel->fileop_del_file), bbox);
+      
+      label = gtk_image_new_from_stock (GTK_STOCK_DELETE,
+ 					GTK_ICON_SIZE_BUTTON);
+      gtk_box_pack_start (GTK_BOX (bbox), label, FALSE, FALSE, 0);
+      gtk_widget_show (label);
+      
+      label = gtk_label_new (_("De_lete File"));
+      gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
+      gtk_label_set_mnemonic_widget (GTK_LABEL (label), filesel->fileop_del_file);
+      gtk_box_pack_start (GTK_BOX (bbox), label, FALSE, FALSE, 0);
+      gtk_widget_show (label);
+      
+      gtk_widget_show (bbox);
+      
       g_signal_connect (filesel->fileop_del_file, "clicked",
 			G_CALLBACK (gtk_file_selection_delete_file),
-			filesel);
-      gtk_box_pack_start (GTK_BOX (filesel->button_area), 
-			  filesel->fileop_del_file, TRUE, TRUE, 0);
+			(gpointer) filesel);
+      gtk_box_pack_end (GTK_BOX (filesel->button_area), 
+			filesel->fileop_del_file, FALSE, FALSE, 0);
       gtk_widget_show (filesel->fileop_del_file);
     }
-
+  
   if (!filesel->fileop_ren_file)
     {
-      filesel->fileop_ren_file = gtk_button_new_with_mnemonic (_("_Rename File"));
+      filesel->fileop_ren_file = gtk_button_new ();
+      gtk_container_set_border_width (GTK_CONTAINER (filesel->fileop_ren_file), 4);
+      
+      bbox = gtk_hbox_new (FALSE, 2);
+      gtk_container_add (GTK_CONTAINER (filesel->fileop_ren_file), bbox);
+      
+      label = gtk_image_new_from_stock (GTK_STOCK_SAVE_AS,
+ 					GTK_ICON_SIZE_BUTTON);
+      gtk_box_pack_start (GTK_BOX (bbox), label, FALSE, FALSE, 0);
+      gtk_widget_show (label);
+      
+      label = gtk_label_new (_("_Rename File"));
+      gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
+      gtk_label_set_mnemonic_widget (GTK_LABEL (label), filesel->fileop_ren_file);
+      gtk_box_pack_start (GTK_BOX (bbox), label, FALSE, FALSE, 0);
+      gtk_widget_show (label);
+      
+      gtk_widget_show (bbox);
+      
       g_signal_connect (filesel->fileop_ren_file, "clicked",
 			G_CALLBACK (gtk_file_selection_rename_file),
-			filesel);
-      gtk_box_pack_start (GTK_BOX (filesel->button_area), 
-			  filesel->fileop_ren_file, TRUE, TRUE, 0);
+			(gpointer) filesel);
+      gtk_box_pack_end (GTK_BOX (filesel->button_area), 
+			filesel->fileop_ren_file, FALSE, FALSE, 0);
       gtk_widget_show (filesel->fileop_ren_file);
     }
   
@@ -1750,6 +1898,95 @@ gtk_file_selection_update_fileops (GtkFileSelection *fs)
   
   if (fs->fileop_ren_file)
     gtk_widget_set_sensitive (fs->fileop_ren_file, sensitive);
+}
+
+static void
+home_clicked (GtkWidget *widget, gpointer data)
+{
+  char *dir;
+  
+  dir = g_strdup_printf ("%s/", g_get_home_dir());
+  
+  gtk_file_selection_populate (GTK_FILE_SELECTION (data), 
+			       dir, FALSE, FALSE);
+  g_free (dir);
+
+  gtk_widget_grab_focus (GTK_FILE_SELECTION (data)->selection_entry);
+}
+
+static char *
+get_desktop_directory (void)
+{
+  char *filename;
+  struct stat buf;
+
+  filename = g_build_filename (g_get_home_dir (), "Desktop", NULL);
+  if (lstat (filename, &buf) == 0) 
+    {
+      if (S_ISLNK (buf.st_mode)) 
+	{
+	  char link_target[MAXPATHLEN + 1];
+	  int len;
+
+	  len = readlink (filename, link_target, MAXPATHLEN);
+	  if (len > 0) 
+	    {
+	      char *desktop_filename;
+	      /* Add a trailing / if there isn't already one */
+	      link_target[len] = '\0';
+	      if (link_target[len - 1] == G_DIR_SEPARATOR) 
+		{
+		  link_target[len - 1] = '\0';
+		}
+
+	      if (!strcmp (link_target, "Desktop")) 
+		{
+		  g_free (filename);
+		  return g_build_filename (g_get_home_dir (), "Desktop", G_DIR_SEPARATOR_S, NULL);
+		}
+	      
+	      desktop_filename = g_build_filename (g_get_home_dir (), "Desktop", NULL);
+	      if (!strcmp (link_target, desktop_filename)) 
+		{
+		  g_free (desktop_filename);
+		  g_free (filename);
+		  return g_build_filename (g_get_home_dir (), "Desktop", G_DIR_SEPARATOR_S, NULL);
+		}
+	      g_free (desktop_filename);
+	    }
+	}
+    }
+  g_free (filename);
+
+  return g_build_filename (g_get_home_dir (), "Desktop", G_DIR_SEPARATOR_S, NULL);
+}
+
+
+static void
+desktop_clicked (GtkWidget *widget, gpointer data)
+{
+  char *dir;
+  
+  dir = get_desktop_directory ();
+  gtk_file_selection_populate (GTK_FILE_SELECTION (data), 
+			       dir, FALSE, FALSE);
+  g_free (dir);
+
+  gtk_widget_grab_focus (GTK_FILE_SELECTION (data)->selection_entry);
+}
+
+static void 
+documents_clicked (GtkWidget *widget, gpointer data)
+{
+  char *dir;
+  dir = g_strdup_printf ("%s/Documents/", g_get_home_dir ());
+  
+  gtk_file_selection_populate (GTK_FILE_SELECTION (data),
+			       dir, FALSE, FALSE);
+  
+  g_free (dir);
+
+  gtk_widget_grab_focus (GTK_FILE_SELECTION (data)->selection_entry);
 }
 
 static gint
