@@ -1842,9 +1842,14 @@ gtk_grab_add (GtkWidget *widget)
 {
   GtkWindowGroup *group;
   GtkWidget *old_grab_widget;
-  
+  GtkWidget *toplevel;
+
   g_return_if_fail (widget != NULL);
-  
+
+  toplevel = gtk_widget_get_toplevel (widget);
+  if (toplevel && gdk_window_get_window_type (toplevel->window) == GDK_WINDOW_OFFSCREEN)
+    return;
+
   if (!gtk_widget_has_grab (widget) && gtk_widget_is_sensitive (widget))
     {
       _gtk_widget_set_has_grab (widget, TRUE);
