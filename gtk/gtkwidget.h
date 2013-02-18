@@ -1342,6 +1342,9 @@ void         _gtk_widget_buildable_finish_accelerator (GtkWidget *widget,
 						       GtkWidget *toplevel,
 						       gpointer   user_data);
 
+void   ubuntu_gtk_widget_set_has_grab  (GtkWidget *widget,
+                                        gboolean   has_grab);
+
 G_END_DECLS
 
 #endif /* __GTK_WIDGET_H__ */

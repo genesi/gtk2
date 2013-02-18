@@ -5289,6 +5289,7 @@ gtk_widget_set_realized
 gtk_widget_get_realized
 gtk_widget_set_mapped
 gtk_widget_get_mapped
+ubuntu_gtk_widget_set_has_grab
 #endif
 #endif
 

@@ -11407,5 +11407,15 @@ gtk_widget_send_focus_change (GtkWidget *widget,
   return res;
 }
 
+void
+ubuntu_gtk_widget_set_has_grab (GtkWidget *widget,
+                                gboolean   has_grab)
+{
+  if (has_grab)
+    GTK_OBJECT_FLAGS (widget) |= GTK_HAS_GRAB;
+  else
+    GTK_OBJECT_FLAGS (widget) &= ~(GTK_HAS_GRAB);
+}
+
 #define __GTK_WIDGET_C__
 #include "gtkaliasdef.c"
