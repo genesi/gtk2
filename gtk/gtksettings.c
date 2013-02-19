@@ -292,7 +292,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
                                              g_param_spec_string ("gtk-theme-name",
 								   P_("Theme Name"),
 								   P_("Name of theme RC file to load"),
-								  "Raleigh",
+								  "Clearlooks",
 								  GTK_PARAM_READWRITE),
                                              NULL);
   g_assert (result == PROP_THEME_NAME);
