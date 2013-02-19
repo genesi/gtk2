@@ -79,7 +79,10 @@ bin_PROGRAMS = gtk-query-immodules-2.0$(EXEEXT) \
 subdir = gtk
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/introspection.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.in
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -148,12 +151,13 @@ am__libgtk_directfb_2_0_la_SOURCES_DIST = gtkquery.c gtksearchengine.c \
 	gtkinfobar.c gtkinputdialog.c gtkinvisible.c gtkitem.c \
 	gtkkeyhash.c gtklabel.c gtklayout.c gtklinkbutton.c \
 	gtkliststore.c gtkmain.c gtkmarshal.c gtkmarshalers.c \
-	gtkmenu.c gtkmenubar.c gtkmenuitem.c gtkmenushell.c \
-	gtkmenutoolbutton.c gtkmessagedialog.c gtkmisc.c \
-	gtkmnemonichash.c gtkmodules.c gtkmountoperation.c \
-	gtknotebook.c gtkobject.c gtkoffscreenwindow.c gtkorientable.c \
-	gtkpagesetup.c gtkpaned.c gtkpango.c gtkpapersize.c \
-	gtkpathbar.c gtkplug.c gtkprintcontext.c gtkprintoperation.c \
+	gtkmenu.c gtkmenubar.c gtkmenuitem.c ubuntumenuproxy.c \
+	ubuntumenuproxymodule.c gtkmenushell.c gtkmenutoolbutton.c \
+	gtkmessagedialog.c gtkmisc.c gtkmnemonichash.c gtkmodules.c \
+	gtkmountoperation.c gtknotebook.c gtkobject.c \
+	gtkoffscreenwindow.c gtkorientable.c gtkpagesetup.c gtkpaned.c \
+	gtkpango.c gtkpapersize.c gtkpathbar.c gtkplug.c \
+	gtkprintcontext.c gtkprintoperation.c \
 	gtkprintoperationpreview.c gtkprintsettings.c gtkprintutils.c \
 	gtkprogressbar.c gtkradioaction.c gtkradiobutton.c \
 	gtkradiomenuitem.c gtkradiotoolbutton.c gtkrange.c gtkrbtree.c \
@@ -234,26 +238,27 @@ am__objects_2 = gtkquery.lo gtksearchengine.lo \
 	gtkinfobar.lo gtkinputdialog.lo gtkinvisible.lo gtkitem.lo \
 	gtkkeyhash.lo gtklabel.lo gtklayout.lo gtklinkbutton.lo \
 	gtkliststore.lo gtkmain.lo gtkmarshal.lo gtkmarshalers.lo \
-	gtkmenu.lo gtkmenubar.lo gtkmenuitem.lo gtkmenushell.lo \
-	gtkmenutoolbutton.lo gtkmessagedialog.lo gtkmisc.lo \
-	gtkmnemonichash.lo gtkmodules.lo gtkmountoperation.lo \
-	gtknotebook.lo gtkobject.lo gtkoffscreenwindow.lo \
-	gtkorientable.lo gtkpagesetup.lo gtkpaned.lo gtkpango.lo \
-	gtkpapersize.lo gtkpathbar.lo gtkplug.lo gtkprintcontext.lo \
-	gtkprintoperation.lo gtkprintoperationpreview.lo \
-	gtkprintsettings.lo gtkprintutils.lo gtkprogressbar.lo \
-	gtkradioaction.lo gtkradiobutton.lo gtkradiomenuitem.lo \
-	gtkradiotoolbutton.lo gtkrange.lo gtkrbtree.lo gtkrc.lo \
-	gtkrecentaction.lo gtkrecentchooserdefault.lo \
-	gtkrecentchooserdialog.lo gtkrecentchoosermenu.lo \
-	gtkrecentchooserwidget.lo gtkrecentchooserutils.lo \
-	gtkrecentchooser.lo gtkrecentfilter.lo gtkrecentmanager.lo \
-	gtkruler.lo gtkscale.lo gtkscalebutton.lo gtkscrollbar.lo \
-	gtkscrolledwindow.lo gtkselection.lo gtkseparator.lo \
-	gtkseparatormenuitem.lo gtkseparatortoolitem.lo gtksettings.lo \
-	gtksizegroup.lo gtkshow.lo gtksocket.lo gtkspinbutton.lo \
-	gtkspinner.lo gtkstatusbar.lo gtkstatusicon.lo gtkstock.lo \
-	gtkstyle.lo gtktable.lo gtktearoffmenuitem.lo gtktestutils.lo \
+	gtkmenu.lo gtkmenubar.lo gtkmenuitem.lo ubuntumenuproxy.lo \
+	ubuntumenuproxymodule.lo gtkmenushell.lo gtkmenutoolbutton.lo \
+	gtkmessagedialog.lo gtkmisc.lo gtkmnemonichash.lo \
+	gtkmodules.lo gtkmountoperation.lo gtknotebook.lo gtkobject.lo \
+	gtkoffscreenwindow.lo gtkorientable.lo gtkpagesetup.lo \
+	gtkpaned.lo gtkpango.lo gtkpapersize.lo gtkpathbar.lo \
+	gtkplug.lo gtkprintcontext.lo gtkprintoperation.lo \
+	gtkprintoperationpreview.lo gtkprintsettings.lo \
+	gtkprintutils.lo gtkprogressbar.lo gtkradioaction.lo \
+	gtkradiobutton.lo gtkradiomenuitem.lo gtkradiotoolbutton.lo \
+	gtkrange.lo gtkrbtree.lo gtkrc.lo gtkrecentaction.lo \
+	gtkrecentchooserdefault.lo gtkrecentchooserdialog.lo \
+	gtkrecentchoosermenu.lo gtkrecentchooserwidget.lo \
+	gtkrecentchooserutils.lo gtkrecentchooser.lo \
+	gtkrecentfilter.lo gtkrecentmanager.lo gtkruler.lo gtkscale.lo \
+	gtkscalebutton.lo gtkscrollbar.lo gtkscrolledwindow.lo \
+	gtkselection.lo gtkseparator.lo gtkseparatormenuitem.lo \
+	gtkseparatortoolitem.lo gtksettings.lo gtksizegroup.lo \
+	gtkshow.lo gtksocket.lo gtkspinbutton.lo gtkspinner.lo \
+	gtkstatusbar.lo gtkstatusicon.lo gtkstock.lo gtkstyle.lo \
+	gtktable.lo gtktearoffmenuitem.lo gtktestutils.lo \
 	gtktextbtree.lo gtktextbuffer.lo gtktextbufferrichtext.lo \
 	gtktextbufferserialize.lo gtktextchild.lo gtktextdisplay.lo \
 	gtktextiter.lo gtktextlayout.lo gtktextmark.lo \
@@ -339,12 +344,13 @@ am__libgtk_quartz_2_0_la_SOURCES_DIST = gtkquery.c gtksearchengine.c \
 	gtkinfobar.c gtkinputdialog.c gtkinvisible.c gtkitem.c \
 	gtkkeyhash.c gtklabel.c gtklayout.c gtklinkbutton.c \
 	gtkliststore.c gtkmain.c gtkmarshal.c gtkmarshalers.c \
-	gtkmenu.c gtkmenubar.c gtkmenuitem.c gtkmenushell.c \
-	gtkmenutoolbutton.c gtkmessagedialog.c gtkmisc.c \
-	gtkmnemonichash.c gtkmodules.c gtkmountoperation.c \
-	gtknotebook.c gtkobject.c gtkoffscreenwindow.c gtkorientable.c \
-	gtkpagesetup.c gtkpaned.c gtkpango.c gtkpapersize.c \
-	gtkpathbar.c gtkplug.c gtkprintcontext.c gtkprintoperation.c \
+	gtkmenu.c gtkmenubar.c gtkmenuitem.c ubuntumenuproxy.c \
+	ubuntumenuproxymodule.c gtkmenushell.c gtkmenutoolbutton.c \
+	gtkmessagedialog.c gtkmisc.c gtkmnemonichash.c gtkmodules.c \
+	gtkmountoperation.c gtknotebook.c gtkobject.c \
+	gtkoffscreenwindow.c gtkorientable.c gtkpagesetup.c gtkpaned.c \
+	gtkpango.c gtkpapersize.c gtkpathbar.c gtkplug.c \
+	gtkprintcontext.c gtkprintoperation.c \
 	gtkprintoperationpreview.c gtkprintsettings.c gtkprintutils.c \
 	gtkprogressbar.c gtkradioaction.c gtkradiobutton.c \
 	gtkradiomenuitem.c gtkradiotoolbutton.c gtkrange.c gtkrbtree.c \
@@ -426,12 +432,13 @@ am__libgtk_win32_2_0_la_SOURCES_DIST = gtkquery.c gtksearchengine.c \
 	gtkinfobar.c gtkinputdialog.c gtkinvisible.c gtkitem.c \
 	gtkkeyhash.c gtklabel.c gtklayout.c gtklinkbutton.c \
 	gtkliststore.c gtkmain.c gtkmarshal.c gtkmarshalers.c \
-	gtkmenu.c gtkmenubar.c gtkmenuitem.c gtkmenushell.c \
-	gtkmenutoolbutton.c gtkmessagedialog.c gtkmisc.c \
-	gtkmnemonichash.c gtkmodules.c gtkmountoperation.c \
-	gtknotebook.c gtkobject.c gtkoffscreenwindow.c gtkorientable.c \
-	gtkpagesetup.c gtkpaned.c gtkpango.c gtkpapersize.c \
-	gtkpathbar.c gtkplug.c gtkprintcontext.c gtkprintoperation.c \
+	gtkmenu.c gtkmenubar.c gtkmenuitem.c ubuntumenuproxy.c \
+	ubuntumenuproxymodule.c gtkmenushell.c gtkmenutoolbutton.c \
+	gtkmessagedialog.c gtkmisc.c gtkmnemonichash.c gtkmodules.c \
+	gtkmountoperation.c gtknotebook.c gtkobject.c \
+	gtkoffscreenwindow.c gtkorientable.c gtkpagesetup.c gtkpaned.c \
+	gtkpango.c gtkpapersize.c gtkpathbar.c gtkplug.c \
+	gtkprintcontext.c gtkprintoperation.c \
 	gtkprintoperationpreview.c gtkprintsettings.c gtkprintutils.c \
 	gtkprogressbar.c gtkradioaction.c gtkradiobutton.c \
 	gtkradiomenuitem.c gtkradiotoolbutton.c gtkrange.c gtkrbtree.c \
@@ -513,12 +520,13 @@ am__libgtk_x11_2_0_la_SOURCES_DIST = gtkquery.c gtksearchengine.c \
 	gtkinfobar.c gtkinputdialog.c gtkinvisible.c gtkitem.c \
 	gtkkeyhash.c gtklabel.c gtklayout.c gtklinkbutton.c \
 	gtkliststore.c gtkmain.c gtkmarshal.c gtkmarshalers.c \
-	gtkmenu.c gtkmenubar.c gtkmenuitem.c gtkmenushell.c \
-	gtkmenutoolbutton.c gtkmessagedialog.c gtkmisc.c \
-	gtkmnemonichash.c gtkmodules.c gtkmountoperation.c \
-	gtknotebook.c gtkobject.c gtkoffscreenwindow.c gtkorientable.c \
-	gtkpagesetup.c gtkpaned.c gtkpango.c gtkpapersize.c \
-	gtkpathbar.c gtkplug.c gtkprintcontext.c gtkprintoperation.c \
+	gtkmenu.c gtkmenubar.c gtkmenuitem.c ubuntumenuproxy.c \
+	ubuntumenuproxymodule.c gtkmenushell.c gtkmenutoolbutton.c \
+	gtkmessagedialog.c gtkmisc.c gtkmnemonichash.c gtkmodules.c \
+	gtkmountoperation.c gtknotebook.c gtkobject.c \
+	gtkoffscreenwindow.c gtkorientable.c gtkpagesetup.c gtkpaned.c \
+	gtkpango.c gtkpapersize.c gtkpathbar.c gtkplug.c \
+	gtkprintcontext.c gtkprintoperation.c \
 	gtkprintoperationpreview.c gtkprintsettings.c gtkprintutils.c \
 	gtkprogressbar.c gtkradioaction.c gtkradiobutton.c \
 	gtkradiomenuitem.c gtkradiotoolbutton.c gtkrange.c gtkrbtree.c \
@@ -723,6 +731,7 @@ GDK_EXTRA_LIBS = @GDK_EXTRA_LIBS@
 GDK_PACKAGES = @GDK_PACKAGES@
 GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
 GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
+GDK_PRIVATE_PACKAGES = @GDK_PRIVATE_PACKAGES@
 GDK_WLIBS = @GDK_WLIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_CFLAGS = @GLIB_CFLAGS@
@@ -873,6 +882,7 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
+lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
@@ -963,6 +973,8 @@ INCLUDES = \
 	-I$(top_srcdir) -I../gdk			\
 	-I$(top_srcdir)/gdk				\
 	-DGDK_DISABLE_DEPRECATED			\
+	-DMAEMO_CHANGES					\
+	-DGTK_FILE_CHOOSER_ENABLE_UNSUPPORTED		\
 	-DGTK_DISABLE_DEPRECATED			\
 	-DGTK_FILE_SYSTEM_ENABLE_UNSUPPORTED		\
 	-DGTK_PRINT_BACKEND_ENABLE_UNSUPPORTED		\
@@ -1030,11 +1042,11 @@ gtk_public_h_sources = gtk.h gtkaboutdialog.h gtkaccelgroup.h \
 	gtkimmodule.h gtkimmulticontext.h gtkinfobar.h gtkinvisible.h \
 	gtkitem.h gtklabel.h gtklayout.h gtklinkbutton.h \
 	gtkliststore.h gtkmain.h gtkmenu.h gtkmenubar.h gtkmenuitem.h \
-	gtkmenushell.h gtkmenutoolbutton.h gtkmessagedialog.h \
-	gtkmisc.h gtkmodules.h gtkmountoperation.h gtknotebook.h \
-	gtkobject.h gtkoffscreenwindow.h gtkorientable.h \
-	gtkpagesetup.h gtkpaned.h gtkpapersize.h gtkplug.h \
-	gtkprintcontext.h gtkprintoperation.h \
+	ubuntumenuproxy.h ubuntumenuproxymodule.h gtkmenushell.h \
+	gtkmenutoolbutton.h gtkmessagedialog.h gtkmisc.h gtkmodules.h \
+	gtkmountoperation.h gtknotebook.h gtkobject.h \
+	gtkoffscreenwindow.h gtkorientable.h gtkpagesetup.h gtkpaned.h \
+	gtkpapersize.h gtkplug.h gtkprintcontext.h gtkprintoperation.h \
 	gtkprintoperationpreview.h gtkprintsettings.h gtkprivate.h \
 	gtkprogressbar.h gtkradioaction.h gtkradiobutton.h \
 	gtkradiomenuitem.h gtkradiotoolbutton.h gtkrange.h gtkrc.h \
@@ -1075,17 +1087,21 @@ gtk_public_h_sources = gtk.h gtkaboutdialog.h gtkaccelgroup.h \
 # Installed header files without compatibility guarantees
 # that are not included in gtk/gtk.h
 gtk_semi_private_h_sources = \
-	gtktextlayout.h
+	gtktextlayout.h         \
+	gtkfilesystem.h		\
+	gtkfilesystemmodel.h	\
+	gtkfilechooserprivate.h	\
+	gtkfilechooserutils.h	\
+	gtkquery.h		\
+	gtksearchengine.h
 
 
 # GTK+ header files that don't get installed
-gtk_private_h_sources = gtkquery.h gtksearchengine.h \
-	gtksearchenginesimple.h gtkdndcursors.h gtkentryprivate.h \
-	gtkbuilderprivate.h gtkcustompaperunixdialog.h \
-	gtkfilechooserdefault.h gtkfilechooserembed.h \
-	gtkfilechooserentry.h gtkfilechooserprivate.h \
-	gtkfilechoosersettings.h gtkfilechooserutils.h gtkfilesystem.h \
-	gtkfilesystemmodel.h gtkiconcache.h gtkintl.h gtkkeyhash.h \
+gtk_private_h_sources = gtksearchenginesimple.h gtkdndcursors.h \
+	gtkentryprivate.h gtkbuilderprivate.h \
+	gtkcustompaperunixdialog.h gtkfilechooserdefault.h \
+	gtkfilechooserembed.h gtkfilechooserentry.h \
+	gtkfilechoosersettings.h gtkiconcache.h gtkintl.h gtkkeyhash.h \
 	gtkmnemonichash.h gtkmountoperationprivate.h gtkpango.h \
 	gtkpathbar.h gtkplugprivate.h gtkprintoperation-private.h \
 	gtkprintutils.h gtkrbtree.h gtkrecentchooserdefault.h \
@@ -1131,12 +1147,13 @@ gtk_base_c_sources = gtkquery.c gtksearchengine.c \
 	gtkinfobar.c gtkinputdialog.c gtkinvisible.c gtkitem.c \
 	gtkkeyhash.c gtklabel.c gtklayout.c gtklinkbutton.c \
 	gtkliststore.c gtkmain.c gtkmarshal.c gtkmarshalers.c \
-	gtkmenu.c gtkmenubar.c gtkmenuitem.c gtkmenushell.c \
-	gtkmenutoolbutton.c gtkmessagedialog.c gtkmisc.c \
-	gtkmnemonichash.c gtkmodules.c gtkmountoperation.c \
-	gtknotebook.c gtkobject.c gtkoffscreenwindow.c gtkorientable.c \
-	gtkpagesetup.c gtkpaned.c gtkpango.c gtkpapersize.c \
-	gtkpathbar.c gtkplug.c gtkprintcontext.c gtkprintoperation.c \
+	gtkmenu.c gtkmenubar.c gtkmenuitem.c ubuntumenuproxy.c \
+	ubuntumenuproxymodule.c gtkmenushell.c gtkmenutoolbutton.c \
+	gtkmessagedialog.c gtkmisc.c gtkmnemonichash.c gtkmodules.c \
+	gtkmountoperation.c gtknotebook.c gtkobject.c \
+	gtkoffscreenwindow.c gtkorientable.c gtkpagesetup.c gtkpaned.c \
+	gtkpango.c gtkpapersize.c gtkpathbar.c gtkplug.c \
+	gtkprintcontext.c gtkprintoperation.c \
 	gtkprintoperationpreview.c gtkprintsettings.c gtkprintutils.c \
 	gtkprogressbar.c gtkradioaction.c gtkradiobutton.c \
 	gtkradiomenuitem.c gtkradiotoolbutton.c gtkrange.c gtkrbtree.c \
@@ -2042,6 +2059,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtkwindow.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtkxembed.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/queryimmodules.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ubuntumenuproxy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ubuntumenuproxymodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/updateiconcache.Po@am__quote@
 
 .c.o:

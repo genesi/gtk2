@@ -43,7 +43,10 @@ noinst_PROGRAMS = $(am__EXEEXT_2)
 subdir = gtk/tests
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/introspection.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.in
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -53,9 +56,10 @@ CONFIG_CLEAN_VPATH_FILES =
 @OS_UNIX_TRUE@am__EXEEXT_1 = defaultvalue$(EXEEXT)
 am__EXEEXT_2 = testing$(EXEEXT) liststore$(EXEEXT) treestore$(EXEEXT) \
 	treeview$(EXEEXT) treeview-scrolling$(EXEEXT) \
-	recentmanager$(EXEEXT) floating$(EXEEXT) object$(EXEEXT) \
-	builder$(EXEEXT) $(am__EXEEXT_1) textbuffer$(EXEEXT) \
-	filtermodel$(EXEEXT) expander$(EXEEXT) action$(EXEEXT)
+	recentmanager$(EXEEXT) menuproxy$(EXEEXT) floating$(EXEEXT) \
+	object$(EXEEXT) builder$(EXEEXT) $(am__EXEEXT_1) \
+	textbuffer$(EXEEXT) filtermodel$(EXEEXT) expander$(EXEEXT) \
+	action$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 am_action_OBJECTS = action.$(OBJEXT)
 action_OBJECTS = $(am_action_OBJECTS)
@@ -87,6 +91,9 @@ floating_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_liststore_OBJECTS = liststore.$(OBJEXT)
 liststore_OBJECTS = $(am_liststore_OBJECTS)
 liststore_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am_menuproxy_OBJECTS = menuproxy.$(OBJEXT)
+menuproxy_OBJECTS = $(am_menuproxy_OBJECTS)
+menuproxy_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_object_OBJECTS = object.$(OBJEXT) pixbuf-init.$(OBJEXT)
 object_OBJECTS = $(am_object_OBJECTS)
 object_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -136,14 +143,14 @@ am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(action_SOURCES) $(builder_SOURCES) $(defaultvalue_SOURCES) \
 	$(expander_SOURCES) $(filtermodel_SOURCES) $(floating_SOURCES) \
-	$(liststore_SOURCES) $(object_SOURCES) \
+	$(liststore_SOURCES) $(menuproxy_SOURCES) $(object_SOURCES) \
 	$(recentmanager_SOURCES) $(testing_SOURCES) \
 	$(textbuffer_SOURCES) $(treestore_SOURCES) $(treeview_SOURCES) \
 	$(treeview_scrolling_SOURCES)
 DIST_SOURCES = $(action_SOURCES) $(builder_SOURCES) \
 	$(defaultvalue_SOURCES) $(expander_SOURCES) \
 	$(filtermodel_SOURCES) $(floating_SOURCES) \
-	$(liststore_SOURCES) $(object_SOURCES) \
+	$(liststore_SOURCES) $(menuproxy_SOURCES) $(object_SOURCES) \
 	$(recentmanager_SOURCES) $(testing_SOURCES) \
 	$(textbuffer_SOURCES) $(treestore_SOURCES) $(treeview_SOURCES) \
 	$(treeview_scrolling_SOURCES)
@@ -211,6 +218,7 @@ GDK_EXTRA_LIBS = @GDK_EXTRA_LIBS@
 GDK_PACKAGES = @GDK_PACKAGES@
 GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
 GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
+GDK_PRIVATE_PACKAGES = @GDK_PRIVATE_PACKAGES@
 GDK_WLIBS = @GDK_WLIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_CFLAGS = @GLIB_CFLAGS@
@@ -361,6 +369,7 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
+lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
@@ -383,8 +392,8 @@ GTESTER_REPORT = gtester-report		# in $PATH for non-GLIB packages
 # initialize variables for unconditional += appending
 EXTRA_DIST = 
 TEST_PROGS = testing liststore treestore treeview treeview-scrolling \
-	recentmanager floating object builder $(am__append_1) \
-	textbuffer filtermodel expander action
+	recentmanager menuproxy floating object builder \
+	$(am__append_1) textbuffer filtermodel expander action
 
 ### testing rules
 
@@ -439,6 +448,8 @@ treeview_scrolling_SOURCES = treeview-scrolling.c
 treeview_scrolling_LDADD = $(progs_ldadd)
 recentmanager_SOURCES = recentmanager.c
 recentmanager_LDADD = $(progs_ldadd)
+menuproxy_SOURCES = menuproxy.c
+menuproxy_LDADD = $(progs_ldadd)
 floating_SOURCES = floating.c
 floating_LDADD = $(progs_ldadd)
 object_SOURCES = object.c pixbuf-init.c
@@ -533,6 +544,9 @@ floating$(EXEEXT): $(floating_OBJECTS) $(floating_DEPENDENCIES)
 liststore$(EXEEXT): $(liststore_OBJECTS) $(liststore_DEPENDENCIES) 
 	@rm -f liststore$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(liststore_OBJECTS) $(liststore_LDADD) $(LIBS)
+menuproxy$(EXEEXT): $(menuproxy_OBJECTS) $(menuproxy_DEPENDENCIES) 
+	@rm -f menuproxy$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(menuproxy_OBJECTS) $(menuproxy_LDADD) $(LIBS)
 object$(EXEEXT): $(object_OBJECTS) $(object_DEPENDENCIES) 
 	@rm -f object$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(object_OBJECTS) $(object_LDADD) $(LIBS)
@@ -568,6 +582,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/filtermodel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/floating.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liststore.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/menuproxy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/object.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pixbuf-init.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/recentmanager.Po@am__quote@
